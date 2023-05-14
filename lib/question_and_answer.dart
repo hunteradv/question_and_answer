@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class QuestionAndAnswerPage extends StatelessWidget {
-  const QuestionAndAnswerPage({super.key});
+  final marginDefault = const EdgeInsets.fromLTRB(30, 20, 30, 0);
 
-  final marginDefault = const EdgeInsets.fromLTRB(50, 20, 50, 0);
+  const QuestionAndAnswerPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,75 +11,120 @@ class QuestionAndAnswerPage extends StatelessWidget {
       appBar: AppBar(
         title: const Text("Q&A"),
       ),
-      body: Container(
-        child: Column(
-          children: [
-            Container(
-              margin: marginDefault,
-              child: const TextField(
-                maxLines: 7,
-                decoration: InputDecoration(
-                    hintText: "Faça sua pergunta",
-                    hintStyle: TextStyle(fontSize: 20),
-                    border: OutlineInputBorder()),
-                keyboardType: TextInputType.text,
-              ),
+      body: Column(
+        children: [
+          Card(
+            margin: marginDefault,
+            child: Column(
+              children: [
+                const TextField(
+                  maxLines: 7,
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.fromLTRB(15, 15, 0, 0),
+                      hintText: "Faça sua pergunta...",
+                      hintStyle: TextStyle(fontSize: 18),
+                      border: InputBorder.none),
+                  keyboardType: TextInputType.text,
+                ),
+                Row(children: [
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 0, 0, 20),
+                    child: const Text(
+                      "Enviar como anônimo",
+                      style: TextStyle(fontSize: 15, color: Colors.grey),
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(180, 0, 0, 15),
+                    child: ElevatedButton(
+                      onPressed: () => {},
+                      child: const Text(
+                        "Enviar",
+                        style: TextStyle(fontSize: 15),
+                      ),
+                    ),
+                  )
+                ])
+              ],
             ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(50, 5, 50, 10),
-              height: 50,
-              child: SizedBox(
-                width: double.infinity,
-                child: ElevatedButton(
-                  onPressed: () => {},
-                  child: const Text(
-                    "Enviar",
-                    style: TextStyle(fontSize: 20),
+          ),
+          Expanded(
+            child: ListView(
+              shrinkWrap: true,
+              children: [
+                Card(
+                  margin: marginDefault,
+                  child: ListTile(
+                    title: const Text("Anonymous"),
+                    subtitle: const Text(
+                        "pergunta muito grande para caber numa unica linha, sendo assim não conseguiria visualiza-la por inteiro"),
+                    leading: const CircleAvatar(
+                      child: Text("A"),
+                    ),
+                    trailing: SizedBox(
+                      height: 40,
+                      width: 80,
+                      child: Row(
+                        children: [
+                          IconButton(
+                              onPressed: () => {},
+                              icon: const Icon(Icons.thumb_up)),
+                          const Text("12")
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
+                Card(
+                  margin: marginDefault,
+                  child: ListTile(
+                    title: const Text("Anonymous"),
+                    subtitle: const Text(
+                        "pergunta muito grande para caber numa unica linha, sendo assim não conseguiria visualiza-la por inteiro"),
+                    leading: const CircleAvatar(
+                      child: Text("A"),
+                    ),
+                    trailing: SizedBox(
+                      height: 40,
+                      width: 80,
+                      child: Row(
+                        children: [
+                          IconButton(
+                              onPressed: () => {},
+                              icon: const Icon(Icons.thumb_up)),
+                          const Text("12")
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                Card(
+                  margin: marginDefault,
+                  child: ListTile(
+                    title: const Text("Anonymous"),
+                    subtitle: const Text(
+                        "pergunta muito grande para caber numa unica linha, sendo assim não conseguiria visualiza-la por inteiro"),
+                    leading: const CircleAvatar(
+                      child: Text("A"),
+                    ),
+                    trailing: SizedBox(
+                      height: 40,
+                      width: 80,
+                      child: Row(
+                        children: [
+                          IconButton(
+                              onPressed: () => {},
+                              icon: const Icon(Icons.thumb_up)),
+                          const Text("12")
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
             ),
-            Expanded(
-              child: ListView(
-                children: [
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5))),
-                    margin: marginDefault,
-                    width: double.infinity,
-                    child: const ListTile(
-                      title: Text("Pergunta 1", style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5))),
-                    margin: marginDefault,
-                    width: double.infinity,
-                    child: const ListTile(
-                      title: Text("Pergunta 2", style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                  Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.black),
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5))),
-                    margin: marginDefault,
-                    width: double.infinity,
-                    child: const ListTile(
-                      title: Text("Pergunta 3", style: TextStyle(fontSize: 20)),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
