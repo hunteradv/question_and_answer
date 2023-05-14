@@ -9,8 +9,10 @@ class QuestionAndAnswerPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Q&A"),
-      ),
+          title: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: const [Text("Q&A"), Text("CODE: CODIGO")],
+      )),
       body: Column(
         children: [
           Card(
