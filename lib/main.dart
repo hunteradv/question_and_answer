@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
@@ -14,19 +15,23 @@ const firebaseConfig = FirebaseOptions(
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: firebaseConfig);
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
   // This widget is the root of your application.
+  final FirebaseAuth auth = FirebaseAuth.instance;
   @override
   Widget build(BuildContext context) {
+    if (auth.currentUser == null) {
+      auth.signInAnonymously();
+    }
+
     return MaterialApp(
+      theme: ThemeData.light(),
       debugShowCheckedModeBanner: false,
-      initialRoute: '/home',
-      routes: {'/home': ((context) => QuestionAndAnswerPage())},
+      home: QuestionAndAnswerPage(),
     );
   }
 }

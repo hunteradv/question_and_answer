@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
@@ -6,17 +7,21 @@ class QuestionAndAnswerPage extends StatelessWidget {
   QuestionAndAnswerPage({super.key});
 
   FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final FirebaseAuth auth = FirebaseAuth.instance;
 
   final marginDefault = const EdgeInsets.fromLTRB(30, 20, 30, 0);
   final TextEditingController txtQuestion = TextEditingController();
 
   addNewQuestion(BuildContext context, String questionText) {
-    firestore
-        .collection('questions')
-        .add({'questionText': questionText, 'likesQuantity': 0});
+    firestore.collection('questions').add({
+      'questionText': questionText,
+      'likesQuantity': 0,
+      'uid': auth.currentUser!.uid,
+      'date': DateTime.now()
+    });
   }
 
-  alterLike(BuildContext context, String questionId) async {
+  addLike(BuildContext context, String questionId) async {
     DocumentReference docRef =
         firestore.collection('questions').doc(questionId);
 
@@ -111,7 +116,7 @@ class QuestionAndAnswerPage extends StatelessWidget {
                                         children: [
                                           IconButton(
                                               onPressed: () => {
-                                                    alterLike(
+                                                    addLike(
                                                         context, question.id)
                                                   },
                                               icon: const Icon(Icons.thumb_up)),
