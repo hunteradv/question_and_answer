@@ -11,7 +11,24 @@ class QuestionAndAnswerPage extends StatelessWidget {
   final TextEditingController txtQuestion = TextEditingController();
 
   addNewQuestion(BuildContext context, String questionText) {
-    firestore.collection('questions').add({'questionText': questionText});
+    firestore
+        .collection('questions')
+        .add({'questionText': questionText, 'likesQuantity': 0});
+  }
+
+  alterLike(BuildContext context, String questionId) async {
+    DocumentReference docRef =
+        firestore.collection('questions').doc(questionId);
+
+    DocumentSnapshot snapshot = await docRef.get();
+
+    if (snapshot.exists) {
+      Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>;
+      int likesQuantity = data['likesQuantity'] ?? 0;
+      int newLikesQuantity = likesQuantity + 1;
+
+      await docRef.update({'likesQuantity': newLikesQuantity});
+    }
   }
 
   @override
@@ -93,9 +110,13 @@ class QuestionAndAnswerPage extends StatelessWidget {
                                       child: Row(
                                         children: [
                                           IconButton(
-                                              onPressed: () => {},
+                                              onPressed: () => {
+                                                    alterLike(
+                                                        context, question.id)
+                                                  },
                                               icon: const Icon(Icons.thumb_up)),
-                                          const Text("12")
+                                          Text(question['likesQuantity']
+                                              .toString())
                                         ],
                                       ),
                                     ),
