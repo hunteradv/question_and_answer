@@ -17,7 +17,8 @@ class QuestionAndAnswerPage extends StatelessWidget {
       'questionText': questionText,
       'likesQuantity': 0,
       'uid': auth.currentUser!.uid,
-      'date': DateTime.now()
+      'date': DateTime.now(),
+      'usersLikes': <String>[]
     });
   }
 
@@ -29,10 +30,16 @@ class QuestionAndAnswerPage extends StatelessWidget {
 
     if (snapshot.exists) {
       Map<String, dynamic>? data = snapshot.data() as Map<String, dynamic>;
-      int likesQuantity = data['likesQuantity'] ?? 0;
-      int newLikesQuantity = likesQuantity + 1;
+      List<dynamic> usersLikes = data['usersLikes'];
 
-      await docRef.update({'likesQuantity': newLikesQuantity});
+      if (!usersLikes.contains(auth.currentUser!.uid)) {
+        int likesQuantity = data['likesQuantity'] ?? 0;
+        int newLikesQuantity = likesQuantity + 1;
+        usersLikes.add(auth.currentUser!.uid);
+
+        await docRef.update(
+            {'likesQuantity': newLikesQuantity, 'usersLikes': usersLikes});
+      }
     }
   }
 
@@ -90,7 +97,11 @@ class QuestionAndAnswerPage extends StatelessWidget {
               shrinkWrap: true,
               children: [
                 StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                    stream: firestore.collection('questions').snapshots(),
+                    stream: firestore
+                        .collection('questions')
+                        .orderBy('likesQuantity', descending: true)
+                        .orderBy('date', descending: false)
+                        .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
                         return const Center(child: CircularProgressIndicator());
